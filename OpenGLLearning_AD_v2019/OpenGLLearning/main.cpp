@@ -1,5 +1,8 @@
 #include<iostream>
+#include<glew.h>
 #include<glfw3.h>
+
+// GLEW OR GLAD
 
 int main(void)
 {
@@ -10,6 +13,9 @@ int main(void)
         return -1;
 
     /* Create a windowed mode window and its OpenGL context */
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
     window = glfwCreateWindow(640, 480, "Hello World", NULL, NULL);
     if (!window)
     {
@@ -19,6 +25,14 @@ int main(void)
 
     /* Make the window's context current */
     glfwMakeContextCurrent(window);
+
+    glewInit();
+
+    float vertices[] = {
+        -0.5f, -0.5f, 0.0f,     // 0
+         0.5f, -0.5f, 0.0f,     // 1
+         0.5f,  0.5f, 0.0f      // 2
+    };
 
     while (!glfwWindowShouldClose(window))
     {
@@ -34,29 +48,8 @@ int main(void)
         glEnable(GL_CULL_FACE);
         glCullFace(GL_BACK);
 
-        glBegin(GL_TRIANGLES);
-            
-            glColor4f(1.0f, 0.0f, 0.0f, 0.5f);
-            glVertex3f(-0.5f, -0.5f, 0.0f);     // bottom left 0
-         //   glColor4f(0.0f, 1.0f, 0.0f, 1.0f);  
-            glVertex3f(0.5f, -0.5f, 0.0f);      // bottom right 1
-          //  glColor4f(0.0f, 0.0f, 1.0f, 1.0f);
-            glVertex3f(0.5f, 0.5f, 0.0f);       // top right 2
-           
-        glEnd();
-
-        glBegin(GL_TRIANGLES);
-            glColor4f(0.0f, 0.0f, 1.0f, 0.5f);
-            glVertex3f(-0.5f, -0.5f, 0.0f);     // bottom left 0
-            glVertex3f(0.5f, -0.5f, 0.0f);       // bottom right 1
-            glVertex3f(-0.5f, 0.5f, 0.0f);      // top left 3
-        glEnd();
-        /*
-        glBegin(GL_TRIANGLES);
-        glVertex3f(-0.5f, -0.5f, 0.0f);
-        glVertex3f(0.5f, 0.5f, 0.0f);
-        glVertex3f(-0.5f, 0.5f, 0.0f);
-        glEnd();*/
+        unsigned int VBO;
+        glGenBuffers(1, &VBO);
 
         /* Swap front and back buffers */
         glfwSwapBuffers(window);
