@@ -4,42 +4,52 @@
 int main(void)
 {
     GLFWwindow* window;
-    GLFWwindow* window1;
 
     /* Initialize the library */
     if (!glfwInit())
         return -1;
 
     /* Create a windowed mode window and its OpenGL context */
-    window = glfwCreateWindow(640, 480, "Hello WorldONE", NULL, NULL);
-    window1 = glfwCreateWindow(640, 480, "Hello WorldTWO", NULL, NULL);
+    window = glfwCreateWindow(640, 480, "Hello World", NULL, NULL);
     if (!window)
     {
         glfwTerminate();
         return -1;
     }
 
-    while (!glfwWindowShouldClose(window) || !glfwWindowShouldClose(window1))
-    {
-        /* Make the window's context current */
-        glfwMakeContextCurrent(window);
+    /* Make the window's context current */
+    glfwMakeContextCurrent(window);
 
+    while (!glfwWindowShouldClose(window))
+    {
         /* Loop until the user closes the window */
         /* Render here */
-        glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+        glClearColor(0.2f, 0.0f, 0.0f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 
-        glBegin(GL_TRIANGLES);
-        glColor4f(1.0f, 0.0f, 0.0f, 1.0f);
-        glVertex3f(-0.5f, -0.5f, 0.0f);
-        glColor4f(0.0f, 1.0f, 0.0f, 1.0f);
-        glVertex3f(0.5f, -0.5f, 0.0f);
-        glColor4f(0.0f, 0.0f, 1.0f, 1.0f);
-        glVertex3f(0.5f, 0.5f, 0.0f);
+        glEnable(GL_BLEND);
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-        glVertex3f(-0.5f, -0.5f, 0.0f);
-        glVertex3f(0.5f, 0.5f, 0.0f);
-        glVertex3f(-0.5f, 0.5f, 0.0f);
+        glFrontFace(GL_CCW);
+        glEnable(GL_CULL_FACE);
+        glCullFace(GL_BACK);
+
+        glBegin(GL_TRIANGLES);
+            
+            glColor4f(1.0f, 0.0f, 0.0f, 0.5f);
+            glVertex3f(-0.5f, -0.5f, 0.0f);     // bottom left 0
+         //   glColor4f(0.0f, 1.0f, 0.0f, 1.0f);  
+            glVertex3f(0.5f, -0.5f, 0.0f);      // bottom right 1
+          //  glColor4f(0.0f, 0.0f, 1.0f, 1.0f);
+            glVertex3f(0.5f, 0.5f, 0.0f);       // top right 2
+           
+        glEnd();
+
+        glBegin(GL_TRIANGLES);
+            glColor4f(0.0f, 0.0f, 1.0f, 0.5f);
+            glVertex3f(-0.5f, -0.5f, 0.0f);     // bottom left 0
+            glVertex3f(0.5f, -0.5f, 0.0f);       // bottom right 1
+            glVertex3f(-0.5f, 0.5f, 0.0f);      // top left 3
         glEnd();
         /*
         glBegin(GL_TRIANGLES);
@@ -51,33 +61,9 @@ int main(void)
         /* Swap front and back buffers */
         glfwSwapBuffers(window);
 
-        /* Make the window's context current */
-        glfwMakeContextCurrent(window1);
-
-        /* Render here */
-        glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
-
-        glBegin(GL_TRIANGLES);
-
-        glVertex3f(-0.5f, -0.5f, 0.0f);
-        glVertex3f(0.5f, 0.5f, 0.0f);
-        glVertex3f(-0.5f, 0.5f, 0.0f);
-        glEnd();
-        /*
-        glBegin(GL_TRIANGLES);
-        glVertex3f(-0.5f, -0.5f, 0.0f);
-        glVertex3f(0.5f, 0.5f, 0.0f);
-        glVertex3f(-0.5f, 0.5f, 0.0f);
-        glEnd();*/
-
-        /* Swap front and back buffers */
-        glfwSwapBuffers(window1);
-
         /* Poll for and process events */
         glfwPollEvents();
     }
-    
 
     glfwTerminate();
     return 0;
